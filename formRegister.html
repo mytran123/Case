@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="form.js"></script>
+    <link rel="stylesheet" href="form.css">
+</head>
+<body>
+<div class="container">
+    <div class="form-login">
+        <h1>Đăng ký thành viên</h1>
+        <div class="form-text">
+            <label>Username</label>
+            <input type="text" id="name">
+        </div>
+        <div class="form-text">
+            <label>Password</label>
+            <input type="password" id="password">
+        </div>
+        <div class="form-text">
+            <label>Re Password</label>
+            <input type="password" id="repass">
+        </div>
+        <div class="form-text">
+            <label>Phone Number</label>
+            <input type="text" id="phoneNumber">
+        </div>
+        <div class="form-text">
+            <label>Email</label>
+            <input type="email" id="email">
+        </div>
+        <button type="button" onclick="formRegister()">Đăng Ký</button>
+    </div>
+</div>
+<script>
+    function formRegister() {
+        let name = document.getElementById("name").value;
+        let phoneNumber = document.getElementById("phoneNumber").value;
+        let email = document.getElementById("email").value;
+        let password = document.getElementById("password").value;
+        let rePassword = document.getElementById("repass").value;
+
+        if (name === "" || phoneNumber === "" || email === "" || password === "" || rePassword === "") {
+            alert("Điền đầy đủ thông tin")
+        } else {
+            alert("Đăng ký THÀNH CÔNG");
+
+            let users = loadData();
+            let userInfor = {
+                "name": name,
+                "phonenumber": phoneNumber,
+                "email": email,
+                "password": password
+            }
+
+            users.push(userInfor);
+            saveData(users);
+            window.location.href = "formLogin.html";
+        }
+    }
+</script>
+</body>
+</html>

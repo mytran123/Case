@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="form.css">
+    <title>Form -Login</title>
+    <script src="form.js"></script>
+</head>
+<body>
+<div class="container">
+    <form>
+        <div class="form-login">
+            <h1>Đăng nhập</h1>
+            <div class="form-text" >
+                <label>Username</label>
+                <input type="text" id="username">
+            </div>
+            <div class="form-text" >
+                <label>Password</label>
+                <input type="password" id="password">
+            </div>
+            <button type="button" onclick="formLogin()">Đăng nhập</button>
+            <span>Bạn chưa có tài khoản? Đăng ký <a href="formRegister.html">Tại đây</a></span>
+        </div>
+    </form>
+    <script>
+            function formLogin() {
+                let name = document.getElementById("username").value;
+                let pass = document.getElementById("username").value;
+                let users = loadData();
+                let check = false;
+
+                for (let i = 0; i < users.length;i++) {
+                    if (name === users[i].email && pass === users[i].password) {
+                        check = true;
+                        alert("Đăng nhập THÀNH CÔNG");
+                        saveUserLogin(users[i].name);
+                        window.location.href="Form.html";
+                    }
+                }
+
+                if (!check) alert("Chưa đúng. Vui lòng nhập lại");
+            }
+    </script>
+</div>
+
+</body>
+</html>
