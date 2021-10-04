@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Easy Math</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="EasyMath.css">
+</head>
+<body>
+<div id="main">
+    <h1>Easy Math</h1>
+    <p id="score">0</p>
+    <p id="level">0</p>
+    <div id="time">Time</div>
+    <div id="calculation"></div>
+    <div id="result"></div>
+    <div id="click">
+        <button id="true" onclick="check(this.id)"><i class="fa fa-check"></i></button>
+        <button id="false" onclick="check(this.id)"><i class="fa fa-close"></i></button>
+    </div>
+</div>
+<script>
+    let score = 0;
+    let level = 1;
+    let time = 10;
+    let fullTime = 10;
+    let widthTime = 0;
+
+    function startGame() {
+        time = fullTime;
+        widthTime = document.getElementById("time").offsetWidth;
+        document.getElementById("score").innerHTML = "Score: " + score;
+        document.getElementById("level").innerHTML = "Level: " + level;
+        generateCalculation();
+        countDown();
+    }
+
+    function getRandomNumber(min, max) {
+        return Math.floor(Math.random() * (max - min) + min);
+    }
+
+    function getRandomOperator() {
+        let operator = ["+", "-", "*"];
+        let ran = Math.floor(Math.random() * operator.length);
+        return operator[ran];
+    }
+
+    function generateCalculation() {
+        let number1 = getRandomNumber(1 * level, 5 * level);
+        let number2 = getRandomNumber(1 * level, 5 * level);
+        let op = getRandomOperator();
+        let cal = number1 + " " + op + " " + number2;
+        if (level >= 10) {
+            cal = number1 + " " + op + " " + number2 + getRandomOperator() + " " + getRandomNumber(2, 10);
+        }
+        document.getElementById("calculation").innerHTML = cal;
+        document.getElementById("result").innerHTML = getRandomResult(cal);
+    }
+
+    function getRandomResult() {
+        let randomResult = Math.random() >= 0.5;
+        return randomResult ? getResult() : getFakeResult();
+    }
+
+    function getResult() {
+        let cal = document.getElementById("calculation").innerHTML;
+        return eval(cal);
+    }
+
+    function getFakeResult() {
+        let fakeNumber1 = getResult() - getRandomNumber(2,20)
+        let fakeNumber2 = getResult() + getRandomNumber(2,20)
+
+        let fakeResult = getRandomNumber(fakeNumber1, fakeNumber2);
+
+        return (fakeResult === getResult()) ? getFakeResult() : fakeResult;
+    }
+
+    function countDown() {
+        let timeDiv = document.getElementById("time");
+        let run = setInterval(function () {
+            time -= 0.1;
+            timeDiv.style.width = widthTime * time / fullTime + "px";
+            if (time <= 0) {
+                clearInterval(run);
+                gameOver();
+            }
+        }, 100);
+    }
+
+    function check(bt) {
+        let result = +document.getElementById("result").innerHTML;
+        let check = false;
+        switch (bt) {
+            case "true":
+                if (result == getResult()) check = true;
+                break;
+            case "false":
+                if (result !== getResult()) check = true;
+                break;
+        }
+
+        check?nextLevel():gameOver();
+    }
+
+    function nextLevel() {
+        score += level;
+        level++;
+        time = fullTime;
+        document.getElementById("score").innerHTML = "Score" + score;
+        document.getElementById("level").innerHTML = "Level" + level;
+        document.getElementById("correct").currentTime = 0;
+        document.getElementById("correct").play();
+        generateCalculation();
+    }
+
+    function gameOver() {
+        document.getElementById("true").style.display = "none";
+        document.getElementById("false").style.display = "none";
+        document.getElementById("wrong").play();
+        alert("Game Over, Your score is " + score + ". Replay?");
+        location.reload();
+    }
+
+    startGame();
+</script>
+</body>
+</html>
